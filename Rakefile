@@ -1,13 +1,11 @@
 begin
   require "jeweler"
     Jeweler::Tasks.new do |gem|
-        gem.name = "spud_admin"
-        gem.summary = "Spud Admin Panel Engine"
+        gem.name = "spud_media"
+        gem.summary = "Spud Media File Upload/Storage Engine"
         gem.files = Dir["{lib}/**/*", "{app}/**/*", "{config}/**/*"]
-        gem.add_dependency 'authlogic'
-        gem.add_dependency 'dynamic_form'
-        gem.add_dependency 'breadcrumbs_on_rails'
-        gem.add_dependency 'will_paginate'
+        gem.add_dependency 'spud_admin'
+        gem.add_dependency 'paperclip'
         # other fields that would normally go in your gemspec
         # like authors, email and has_rdoc can also be included here
 	end
