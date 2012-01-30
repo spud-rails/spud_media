@@ -1,4 +1,5 @@
 require 'spud_core'
+require 'paperclip'
 module Spud
 	module Media
 		 class Engine < Rails::Engine
