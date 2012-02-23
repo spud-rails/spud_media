@@ -2,7 +2,8 @@ class SpudMedia < ActiveRecord::Base
 	has_attached_file :attachment,
      :storage => Spud::Media.paperclip_storage,
      :s3_credentials => Spud::Media.s3_credentials,
-     :path => ":class/:id/attachment/:basename.:extension"
+     :path => Spud::Media.storage_path,
+     :url => Spud::Media.storage_url
 
      def image_from_type
      	if self.attachment_content_type.blank?

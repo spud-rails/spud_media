@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "spud_media"
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["David Estes"]
-  s.date = "2012-01-30"
+  s.date = "2012-02-23"
   s.email = "destes@redwindsw.com"
   s.files = [
     "app/assets/images/spud/admin/files_thumbs/dat_thumb.png",
