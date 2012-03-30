@@ -6,7 +6,7 @@ module Spud
 			engine_name :spud_media
 			initializer :admin do
 				Spud::Core.configure do |config|
-				  config.admin_applications += [{:name => "Media",:thumbnail => "spud/admin/media_thumb.png",:url => "/spud/admin/media",:order => 3}]
+				  config.admin_applications += [{:name => "Media",:thumbnail => "spud/admin/media_thumb.png",:url => "/spud/admin/media",:order => 3,:retina => true}]
 				end
 			end
 			initializer :assets do |config| 
