@@ -4,7 +4,7 @@ class SpudMedia < ActiveRecord::Base
      :s3_credentials => Spud::Media.s3_credentials,
      :path => Spud::Media.storage_path,
      :url => Spud::Media.storage_url
-
+     attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment
      def image_from_type
      	if self.attachment_content_type.blank?
      		return "spud/admin/files_thumbs/dat_thumb.png"
