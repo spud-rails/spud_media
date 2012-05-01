@@ -2,8 +2,10 @@ class SpudMedia < ActiveRecord::Base
 	has_attached_file :attachment,
      :storage => Spud::Media.paperclip_storage,
      :s3_credentials => Spud::Media.s3_credentials,
+     :s3_permissions => (proc { |obj| Spud::Media.protected_media ? 'private' : 'public_read' }).call,
      :path => Spud::Media.storage_path,
      :url => Spud::Media.storage_url
+
      attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment
      def image_from_type
      	if self.attachment_content_type.blank?
@@ -44,5 +46,13 @@ class SpudMedia < ActiveRecord::Base
      	end
 
      	return "spud/admin/files_thumbs/dat_thumb.png"
+     end
+
+     def attachment_url
+          if Spud::Media.protected_media
+               return "/protected/media/#{id}/#{attachment.original_filename.parameterize}"
+          else
+               return attachment.url
+          end
      end
 end

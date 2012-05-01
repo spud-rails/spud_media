@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 			resources :media
 		end
 	end
-   
-end
 
+  if Spud::Media.config.protected_media
+    get '/protected/media/:id/:filename' => 'ProtectedMedia#show', :as => 'protected_media'
+  end
+end
