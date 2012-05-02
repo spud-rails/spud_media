@@ -3,13 +3,16 @@ class SpudMedia < ActiveRecord::Base
 	has_attached_file :attachment,
      :storage => Spud::Media.paperclip_storage,
      :s3_credentials => Spud::Media.s3_credentials,
-     :s3_permissions => lambda { |attachment| attachment.instance.is_protected ? 'private' : 'public_read' },
-     :path => lambda { |attachment| 
+     :s3_permissions => lambda { |attachment, style| 
+          attachment.instance.is_protected ? 'private' : 'public-read' 
+     },
+     :default_url => lambda { |attachment| 
+          "foo"
+     },
+     :path => Spud::Media.paperclip_storage == :s3 ? Spud::Media.storage_path : lambda { |attachment| 
           attachment.instance.is_protected ? Spud::Media.storage_path_protected : Spud::Media.storage_path
      },
      :url => Spud::Media.storage_url
-
-     #before_update :validate_s3_permissions
 
      before_update :validate_permissions
 
@@ -51,6 +54,17 @@ class SpudMedia < ActiveRecord::Base
      	end
 
      	return "spud/admin/files_thumbs/dat_thumb.png"
+     end
+
+     # if you are using S3, attachment.url will automatically point to the S3 url
+     # protected files need to hit the rails middle-man first
+     # this method will provide the correct url for either case
+     def attachment_url
+          if Spud::Media.paperclip_storage == :s3 && is_protected
+               return Paperclip::Interpolations.interpolate(Spud::Media.config.storage_url, attachment, 'original')
+          else
+               return attachment.url
+          end
      end
 
 private

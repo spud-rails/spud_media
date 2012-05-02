@@ -1,6 +1,6 @@
 class ProtectedMediaController < Spud::ApplicationController
 
-  before_filter :check_media_permissions
+  before_filter :require_user
 
   def show
     @media = SpudMedia.where(:id => params[:id]).first
@@ -14,17 +14,13 @@ class ProtectedMediaController < Spud::ApplicationController
       else
         filepath = File.join(Rails.root, @media.attachment.path)
         if !File.exists?(filepath)
-          flash[:error] = "The requested file could not be found 2"
+          flash[:error] = "The requested file could not be found"
           redirect_to root_path
         else
           send_file(filepath, :disposition => 'inline')
         end
       end
     end
-  end
-
-  def check_media_permissions
-
   end
 
 end
