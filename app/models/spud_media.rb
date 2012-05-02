@@ -1,12 +1,19 @@
 class SpudMedia < ActiveRecord::Base
+
 	has_attached_file :attachment,
      :storage => Spud::Media.paperclip_storage,
      :s3_credentials => Spud::Media.s3_credentials,
-     :s3_permissions => (proc { |obj| Spud::Media.protected_media ? 'private' : 'public_read' }).call,
-     :path => Spud::Media.storage_path,
+     :s3_permissions => lambda { |attachment| attachment.instance.is_protected ? 'private' : 'public_read' },
+     :path => lambda { |attachment| 
+          attachment.instance.is_protected ? Spud::Media.storage_path_protected : Spud::Media.storage_path
+     },
      :url => Spud::Media.storage_url
 
-     attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment
+     #before_update :validate_s3_permissions
+
+     before_update :validate_permissions
+
+     attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment, :is_protected
      def image_from_type
      	if self.attachment_content_type.blank?
      		return "spud/admin/files_thumbs/dat_thumb.png"
@@ -15,8 +22,6 @@ class SpudMedia < ActiveRecord::Base
      	if self.attachment_content_type.match(/jpeg|jpg/)
      		return "spud/admin/files_thumbs/jpg_thumb.png"
      	end
-
-     	
 
      	if self.attachment_content_type.match(/png/)
      		return "spud/admin/files_thumbs/png_thumb.png"
@@ -48,11 +53,25 @@ class SpudMedia < ActiveRecord::Base
      	return "spud/admin/files_thumbs/dat_thumb.png"
      end
 
-     def attachment_url
-          if Spud::Media.protected_media
-               return "/protected/media/#{id}/#{attachment.original_filename.parameterize}"
-          else
-               return attachment.url
+private
+
+     # If is_protected has changed, we need to make sure we are setting the appropriate permissions
+     def validate_permissions
+          if is_protected_changed?
+               if Spud::Media.config.paperclip_storage == :filesystem
+                    if is_protected
+                         old_path = Paperclip::Interpolations.interpolate(Spud::Media.config.storage_path, attachment, 'original')
+                         new_path = Paperclip::Interpolations.interpolate(Spud::Media.config.storage_path_protected, attachment, 'original')
+                    else
+                         old_path = Paperclip::Interpolations.interpolate(Spud::Media.config.storage_path_protected, attachment, 'original')
+                         new_path = Paperclip::Interpolations.interpolate(Spud::Media.config.storage_path, attachment, 'original') 
+                    end
+                    new_base_dir = File.dirname(new_path)
+                    old_base_dir= File.dirname(old_path)
+                    FileUtils.mv(old_base_dir, new_base_dir)
+               elsif Spud::Media.config.paperclip_storage == :s3
+
+               end
           end
      end
 end
