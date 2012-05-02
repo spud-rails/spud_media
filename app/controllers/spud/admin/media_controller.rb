@@ -2,7 +2,7 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 	layout 'spud/admin/media/detail'
 	add_breadcrumb "Media", :spud_admin_media_path
 	belongs_to_spud_app :media
-	before_filter :load_media,:only => [:edit,:update,:show,:destroy]
+	before_filter :load_media,:only => [:edit,:update,:show,:destroy,:set_private,:set_access]
 	def index
 		@media = SpudMedia.order("created_at DESC").paginate :page => params[:page]
 		respond_with @media
@@ -37,6 +37,13 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 		flash[:notice] = "File successfully destroyed" if @media.destroy
 		respond_with @media, :location => spud_admin_media_url
 	end
+
+	def set_access
+		is_protected = params[:protected] || false
+		@media.update_attribute(:is_protected, is_protected)
+		respond_with @media, :location => spud_admin_media_url
+	end
+
 private
 	def load_media
 		@media = SpudMedia.where(:id => params[:id]).first
