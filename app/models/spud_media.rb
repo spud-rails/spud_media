@@ -70,7 +70,7 @@ private
                     old_base_dir= File.dirname(old_path)
                     FileUtils.mv(old_base_dir, new_base_dir)
                elsif Spud::Media.config.paperclip_storage == :s3
-
+                    # unfinished!
                end
           end
      end
