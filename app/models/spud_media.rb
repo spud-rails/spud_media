@@ -6,9 +6,6 @@ class SpudMedia < ActiveRecord::Base
      :s3_permissions => lambda { |attachment, style| 
           attachment.instance.is_protected ? 'private' : 'public-read' 
      },
-     :default_url => lambda { |attachment| 
-          "foo"
-     },
      :path => Spud::Media.paperclip_storage == :s3 ? Spud::Media.storage_path : lambda { |attachment| 
           attachment.instance.is_protected ? Spud::Media.storage_path_protected : Spud::Media.storage_path
      },
