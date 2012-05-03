@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Spud File upload/management module"
   s.description = "Spud Media allows you to upload files to your site and manage them in the spud administrative panel. It also uses paperclip and supports s3 storage"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "Readme.markdown"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.2"
