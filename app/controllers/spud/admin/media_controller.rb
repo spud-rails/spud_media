@@ -3,6 +3,7 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 	add_breadcrumb "Media", :spud_admin_media_path
 	belongs_to_spud_app :media
 	before_filter :load_media,:only => [:edit,:update,:show,:destroy,:set_private,:set_access]
+	
 	def index
 		@media = SpudMedia.order("created_at DESC").paginate :page => params[:page]
 		respond_with @media
@@ -31,6 +32,7 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 	end
 
 	def update
+		
 	end
 
 	def destroy
