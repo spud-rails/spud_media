@@ -1,6 +1,6 @@
 # Spud Media
 
-Spud Media is an engine for managing documents and other media miscellaneous files, designed for use with [Spud][1].
+Spud Media is an engine for managing documents and other miscellaneous media files, designed for use with [Spud][1].
 
 ## Installation/Usage
 
