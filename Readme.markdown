@@ -20,17 +20,17 @@ Spud Media is an engine for managing documents and other media miscellaneous fil
 
 Spud Photos accepts the following configuration options:
 
-  Spud::Media.configure do |config|
+    Spud::Media.configure do |config|
   
-    # s3 storage requires the 'aws-sdk' gem. defaults to filesystem
-    config.paperclip_storage = :s3
-    config.s3_credentials = "#{Rails.root}/config/s3.yml"
+        # s3 storage requires the 'aws-sdk' gem. defaults to filesystem
+        config.paperclip_storage = :s3
+        config.s3_credentials = "#{Rails.root}/config/s3.yml"
 
     # see below for notes on 'storage_path_protected'
-    config.storage_path = "public/system/spud_media/:id/:style/:basename.:extension"
-    config.storage_path_protected = "public/system/spud_media_protected/:id/:style/:basename.:extension"
-    config.storage_url = "/system/spud_media/:id/:style/:basename.:extension"
-  end
+        config.storage_path = "public/system/spud_media/:id/:style/:basename.:extension"
+        config.storage_path_protected = "public/system/spud_media_protected/:id/:style/:basename.:extension"
+        config.storage_url = "/system/spud_media/:id/:style/:basename.:extension"
+    end
 
 ## File Protection
 
@@ -42,7 +42,7 @@ Unprotected files are stored under `/public/system/spud_media` and are accessed 
 
 Protected files are moved to `public/system/spud_media_protected`. Note that the public-facing download URL should __not__ reflect the `protected` storage path. Instead the user will hit the same URL as before, but this time their request will hit the `show` action of the `ProtectedMedia` controller. 
 
-It is up to the individual developer to make sure that the protected storage path is not accessible by the public. You may choose to protect this folder via server configurations, or you can move the folder out of the document root using `config.storage_path_protected`.
+__It is up to the individual developer to make sure that the protected storage path is not accessible by the public.__ You may choose to protect this folder via server configurations, or you can move the folder out of the document root using `config.storage_path_protected`.
 
 ### Amazon S3
 
