@@ -36,6 +36,13 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 		respond_with @media
 	end
 
+	def edit
+		if !@media.is_image?
+			flash[:error] = "Unable to edit #{@media.attachment_file_name}"
+			redirect_to spud_admin_media_url
+		end
+	end
+
 	def update
 		if @media.update_attributes(params[:spud_media])
 			@media.attachment.reprocess!

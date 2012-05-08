@@ -16,7 +16,15 @@ class SpudMedia < ActiveRecord::Base
 
   validates_numericality_of :crop_x, :crop_y, :crop_w, :crop_h, :crop_s, :allow_nil => true
 
+  before_create :rename_file
   before_update :validate_permissions
+
+  def rename_file
+    # remove periods and other unsafe characters from file name to make routing easier
+    extension = File.extname(attachment_file_name)
+    filename = attachment_file_name.chomp(extension).parameterize
+    attachment.instance_write :file_name, filename + extension
+  end
 
   def image_from_type
     if self.attachment_content_type.blank?
@@ -83,8 +91,6 @@ class SpudMedia < ActiveRecord::Base
     end
     if Spud::Media.paperclip_storage == :s3 && is_protected
       return Paperclip::Interpolations.interpolate(Spud::Media.config.storage_url, attachment, style)
-    elsif Spud::Media.paperclip_storage == :filesystem && is_protected
-      return "/media/protected/#{id}/#{style}/#{attachment_file_name.parameterize}"
     else
       return attachment.url(style)
     end
