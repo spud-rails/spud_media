@@ -7,19 +7,11 @@ Spud.Admin = (typeof(Spud.Admin) == 'undefined') ? {} : Spud.Admin;
 Spud.Admin.Media = new function(){
   
   var self = this;
-
-  this.new = function(){
-
-  };
-
-  this.selectedFile = function(){
-
-  };
-
   var cropimage;
   var cropcontainer;
   var croptarget;
   var cropscale;
+  var maxcropscale;
   var originalWidth;
   var originalHeight;
   var cropartbox;
@@ -27,7 +19,7 @@ Spud.Admin.Media = new function(){
 
   this.edit = function(){
 
-    cropscale = parseFloat($('#spud_media_crop_s').val());
+    // cache some selectors
     cropimage = $('#spud_media_cropper_image');
     cropcontainer = $('#spud_media_cropper_jcrop_container');
     cropartbox = $('#spud_media_cropper');
@@ -36,10 +28,36 @@ Spud.Admin.Media = new function(){
     originalWidth = cropimage.width();
     originalHeight = cropimage.height();
 
+    // the max width is 900px (at least until the UI can handle more than that)
+    if(originalWidth > 900){
+      maxcropscale = Math.floor(900 / originalWidth * 100);
+    }
+    else{
+      maxcropscale = 100;
+    }
+
+    // scale down the original if necessary
+    cropscale = parseInt($('#spud_media_crop_s').val());
+    if(cropscale > maxcropscale){
+      $('#spud_media_crop_s').val(maxcropscale);
+      cropscale = maxcropscale;
+    }
+
+    // if this is a new image, width and hight will be null. set some starter values.
+    if(!$('#spud_media_crop_w').val()){
+      $('#spud_media_crop_w').val(originalWidth * (maxcropscale / 100));
+      $('#spud_media_crop_h').val(originalHeight * (maxcropscale / 100));
+    }
+
+    // update height of artbox to match height of scaled image
+    cropartbox.height(originalHeight * (maxcropscale / 100));
+
     self.resizeAndCenter(cropscale);
 
     $('body').on('change', '#spud_media_crop_s', self.changedMediaCropScale);
+    $('body').on('click', '#spud_media_cropper_resize_up, #spud_media_cropper_resize_down', self.incrementMediaCropScale);
     $('body').on('change', '#spud_media_crop_x, #spud_media_crop_y, #spud_media_crop_w, #spud_media_crop_h', self.changedMediaCropDimensions);
+    $('body').on('keypress', 'form input[type=text]', self.preventSubmitOnEnterKey);
   };
 
   this.resizeAndCenter = function(percent){
@@ -64,12 +82,9 @@ Spud.Admin.Media = new function(){
       }
     );
 
-    // update height of artbox to match height of scaled image
-    cropartbox.height(_height);
-
     // using the outer container, center the jcrop object in the artboard
     var _left = (900 - _width) / 2;
-    var _top = 0;
+    var _top = (cropartbox.height() - _height) / 6;
     cropcontainer.css({
       left:_left,
       top:_top
@@ -77,23 +92,37 @@ Spud.Admin.Media = new function(){
   };
 
   this.updateCropCoordinates = function(c){
-    $('#spud_media_crop_x').val(Math.floor(c.x));
-    $('#spud_media_crop_y').val(Math.floor(c.y));
-    $('#spud_media_crop_w').val(Math.floor(c.w));
-    $('#spud_media_crop_h').val(Math.floor(c.h));
+    $('#spud_media_crop_x').val(Math.floor(c.x * (cropscale / 100)));
+    $('#spud_media_crop_y').val(Math.floor(c.y * (cropscale / 100)));
+    $('#spud_media_crop_w').val(Math.floor(c.w * (cropscale / 100)));
+    $('#spud_media_crop_h').val(Math.floor(c.h * (cropscale / 100)));
   };
 
   this.changedMediaCropScale = function(e){
     var val = $(this).val();
-    var percent = parseFloat(val);
-    if(!percent || percent > 100){
-      $(this).val(cropscale);
+    var percent = parseInt(val);
+    if(!percent || percent > maxcropscale){
+      $(this).val(maxcropscale);
     }
     else{
+      $(this).val(percent);
       cropscale = percent;
       self.resizeAndCenter(percent); 
     }
   };
+
+  this.incrementMediaCropScale = function(e){
+    var id = $(this).attr('id');
+    if(id == 'spud_media_cropper_resize_up'){
+      cropscale = Math.min(maxcropscale, cropscale+5.0);
+    }
+    else{
+      cropscale = Math.max(0, cropscale-5.0);
+    }
+    $('#spud_media_crop_s').val(cropscale);
+    self.resizeAndCenter(cropscale);
+    return false;
+  }
 
   this.changedMediaCropDimensions = function(e){
     var selection = self.getSelectFields();
@@ -113,7 +142,21 @@ Spud.Admin.Media = new function(){
       return false;
     }
     else{
-      return [x, y, x2, y2];
+      return [x * (100 / cropscale), y * (100 / cropscale), x2 * (100 / cropscale), y2 * (100 / cropscale)];
     }
   }
+
+  this.preventSubmitOnEnterKey = function(e){
+    if(e.keyCode == 13) {
+      e.preventDefault();
+      // need to prevent the form submit, but still fire the value change events
+      if($(this).attr('id') == 'spud_media_crop_s'){
+        self.changedMediaCropScale.apply(this, [e]);
+      }
+      else{
+        self.changedMediaCropDimensions(e);
+      }
+      return false;
+    }
+  };
 };

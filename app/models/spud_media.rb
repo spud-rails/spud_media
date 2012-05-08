@@ -67,7 +67,7 @@ class SpudMedia < ActiveRecord::Base
 
   def custom_style
     if is_image? && has_custom_crop?
-      {:cropped => {:geometry => '', :convert_options => "-crop #{crop_w}x#{crop_h}+#{crop_x}+#{crop_y} -resize #{crop_s}%"}}
+      {:cropped => {:geometry => '', :convert_options => "-resize #{crop_s}% -crop #{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"}}
     else
       {}
     end
@@ -76,12 +76,15 @@ class SpudMedia < ActiveRecord::Base
   # if you are using S3, attachment.url will automatically point to the S3 url
   # protected files need to hit the rails middle-man first
   # this method will provide the correct url for either case
-  def attachment_url
-    style = (is_image? && has_custom_crop?) ? 'cropped' : 'original'
+  def attachment_url(style=nil)
+    # defaults to cropped style if that style exists, otherwise use original
+    if !style
+      style = (is_image? && has_custom_crop?) ? 'cropped' : 'original'
+    end
     if Spud::Media.paperclip_storage == :s3 && is_protected
       return Paperclip::Interpolations.interpolate(Spud::Media.config.storage_url, attachment, style)
     elsif Spud::Media.paperclip_storage == :filesystem && is_protected
-      return "/media/protected/#{id}/#{attachment_file_name.parameterize}"
+      return "/media/protected/#{id}/#{style}/#{attachment_file_name.parameterize}"
     else
       return attachment.url(style)
     end

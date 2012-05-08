@@ -16,6 +16,8 @@ img.size-50-thumb {
   width: 900px;
   /*height: 800px;*/
   margin:auto;
+  border: 1px solid #ccc;
+  border-top: none;
 }
 #spud_media_cropper{
   position: relative;
@@ -43,7 +45,7 @@ img.size-50-thumb {
 #spud_media_cropper_toolbar{
   font-size: 11px;
   background: #ccc;
-  width: 880px;
+  width: 882px;
   margin:0 auto;
   padding: 5px 10px;
   border-top-right-radius: 8px;
@@ -63,6 +65,12 @@ img.size-50-thumb {
 }
 #spud_media_cropper_toolbar form{
   margin: 0;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 }
 #spud_media_cropper_toolbar input[type=text],
 #spud_media_cropper_toolbar label{
@@ -74,6 +82,16 @@ img.size-50-thumb {
 #spud_media_cropper_toolbar input[type=text]{
   width: 30px;
 }
-#spud_media_cropper_submit{
+.spud_media_cropper_toolbar_item{
+  margin-right: 6px;
+  padding-right: 6px;
+  display: inline-block;
+  border-right: 1px solid #ccc;
+}
+#spud_media_cropper_toolbar_actions{
   float: right;
+}
+a[id^="spud_media_cropper_resize_"]:active{
+  position: relative;
+  top: 1px;
 }
