@@ -125,9 +125,11 @@ private
 
   def validate_permissions_s3
     if is_protected
-      attachment.s3_object.acl = :private
+      attachment.s3_object(:original).acl = :private
+      attachment.s3_object(:cropped).acl = :private unless !has_custom_crop?
     else
-      attachment.s3_object.acl = :public_read
+      attachment.s3_object(:original).acl = :public_read
+      attachment.s3_object(:cropped).acl = :public_read unless !has_custom_crop?
     end
   end
 
