@@ -12,6 +12,7 @@ Spud.Admin.Media = new function(){
   var croptarget;
   var cropscale;
   var maxcropscale;
+  var cropscaleincrement;
   var originalWidth;
   var originalHeight;
   var cropartbox;
@@ -24,40 +25,47 @@ Spud.Admin.Media = new function(){
     cropcontainer = $('#spud_media_cropper_jcrop_container');
     cropartbox = $('#spud_media_cropper');
 
-    // get the original dimensions before scaling the image down
-    originalWidth = cropimage.width();
-    originalHeight = cropimage.height();
+    // load the image in a dynamically created element to make sure its definitely ready (IE fix)
+    var img = $('<img/>', {src:cropimage.attr('src')});
+    img.load(function(){
 
-    // the max width is 900px (at least until the UI can handle more than that)
-    if(originalWidth > 900){
-      maxcropscale = Math.floor(900 / originalWidth * 100);
-    }
-    else{
-      maxcropscale = 100;
-    }
+      // get the original dimensions before scaling the image down
+      originalWidth = cropimage.width();
+      originalHeight = cropimage.height();
 
-    // scale down the original if necessary
-    cropscale = parseInt($('#spud_media_crop_s').val());
-    if(cropscale > maxcropscale){
-      $('#spud_media_crop_s').val(maxcropscale);
-      cropscale = maxcropscale;
-    }
+      // the max width is 900px (at least until the UI can handle more than that)
+      if(originalWidth > 900){
+        maxcropscale = Math.floor(900 / originalWidth * 100);
+      }
+      else{
+        maxcropscale = 100;
+      }
+      cropscaleincrement = Math.ceil(3.0 * (maxcropscale / 100));
 
-    // if this is a new image, width and hight will be null. set some starter values.
-    if(!$('#spud_media_crop_w').val()){
-      $('#spud_media_crop_w').val(originalWidth * (maxcropscale / 100));
-      $('#spud_media_crop_h').val(originalHeight * (maxcropscale / 100));
-    }
+      // scale down the original if necessary
+      cropscale = parseInt($('#spud_media_crop_s').val());
+      if(cropscale > maxcropscale){
+        $('#spud_media_crop_s').val(maxcropscale);
+        cropscale = maxcropscale;
+      }
 
-    // update height of artbox to match height of scaled image
-    cropartbox.height(originalHeight * (maxcropscale / 100));
+      // if this is a new image, width and hight will be null. set some starter values.
+      if(!$('#spud_media_crop_w').val()){
+        $('#spud_media_crop_w').val(originalWidth * (maxcropscale / 100));
+        $('#spud_media_crop_h').val(originalHeight * (maxcropscale / 100));
+      }
 
-    self.resizeAndCenter(cropscale);
+      // update height of artbox to match height of scaled image
+      cropartbox.height(originalHeight * (maxcropscale / 100));
 
-    $('body').on('change', '#spud_media_crop_s', self.changedMediaCropScale);
-    $('body').on('click', '#spud_media_cropper_resize_up, #spud_media_cropper_resize_down', self.incrementMediaCropScale);
-    $('body').on('change', '#spud_media_crop_x, #spud_media_crop_y, #spud_media_crop_w, #spud_media_crop_h', self.changedMediaCropDimensions);
-    $('body').on('keypress', 'form input[type=text]', self.preventSubmitOnEnterKey);
+      self.resizeAndCenter(cropscale);
+
+      $('body').on('change', '#spud_media_crop_s', self.changedMediaCropScale);
+      $('body').on('click', '#spud_media_cropper_resize_up, #spud_media_cropper_resize_down', self.incrementMediaCropScale);
+      $('body').on('change', '#spud_media_crop_x, #spud_media_crop_y, #spud_media_crop_w, #spud_media_crop_h', self.changedMediaCropDimensions);
+      $('body').on('keypress', 'form input[type=text]', self.preventSubmitOnEnterKey);
+
+    });
   };
 
   this.resizeAndCenter = function(percent){
@@ -114,10 +122,10 @@ Spud.Admin.Media = new function(){
   this.incrementMediaCropScale = function(e){
     var id = $(this).attr('id');
     if(id == 'spud_media_cropper_resize_up'){
-      cropscale = Math.min(maxcropscale, cropscale+5.0);
+      cropscale = Math.min(maxcropscale, cropscale+cropscaleincrement);
     }
     else{
-      cropscale = Math.max(0, cropscale-5.0);
+      cropscale = Math.max(0, cropscale-cropscaleincrement);
     }
     $('#spud_media_crop_s').val(cropscale);
     self.resizeAndCenter(cropscale);

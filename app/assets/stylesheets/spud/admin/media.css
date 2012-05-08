@@ -78,6 +78,7 @@ user-select: none;
   margin: 0;
   font-size: 11px;
   height: 11px;
+  line-height: 11px;
 }
 #spud_media_cropper_toolbar input[type=text]{
   width: 30px;
