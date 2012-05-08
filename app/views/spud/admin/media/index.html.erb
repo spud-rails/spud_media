@@ -12,6 +12,9 @@
 				</span>
 
 				<span class="edit_controls">
+					<% if media.is_image? %>
+						<%= link_to 'Crop', edit_spud_admin_medium_path(media.id), :class => 'btn' %>
+					<% end %>
 					<% if media.is_protected %>
 						<%= link_to raw('<i class="icon-lock"></i> Protected'), set_access_spud_admin_medium_path(media.id, :protected => false), :method => :put, :class => 'btn' %>
 					<% else %>

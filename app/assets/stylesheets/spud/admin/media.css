@@ -1,0 +1,80 @@
+/*
+*= require jcrop/css/jquery.Jcrop
+*/
+
+img.size-50-thumb {
+  height:50px !important;
+}
+
+#details{
+  padding-bottom: 25px;
+}
+
+/* Crop tool
+------------------------ */
+#spud_media_cropper_outer{
+  width: 900px;
+  /*height: 800px;*/
+  margin:auto;
+}
+#spud_media_cropper{
+  position: relative;
+  overflow: hidden;
+  width: 900px;
+  /*height: 800px;*/
+  background:url('/assets/spud/admin/media/checkers.jpg');
+  margin:auto;
+}
+#spud_media_cropper_container{
+
+}
+#spud_media_cropper_jcrop_container{
+  position: absolute;
+}
+#spud_media_cropper_target{
+  position: absolute;
+}
+#spud_media_cropper_image{
+  position: absolute;
+}
+
+/* Crop toolbar
+------------------ */
+#spud_media_cropper_toolbar{
+  font-size: 11px;
+  background: #ccc;
+  width: 880px;
+  margin:0 auto;
+  padding: 5px 10px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+
+  background-image: linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
+  background-image: -o-linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
+  background-image: -moz-linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
+  background-image: -webkit-linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
+  background-image: -ms-linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.33, rgb(204,204,204)),
+    color-stop(0.66, rgb(230,230,230))
+  );
+}
+#spud_media_cropper_toolbar form{
+  margin: 0;
+}
+#spud_media_cropper_toolbar input[type=text],
+#spud_media_cropper_toolbar label{
+  display: inline-block;
+  margin: 0;
+  font-size: 11px;
+  height: 11px;
+}
+#spud_media_cropper_toolbar input[type=text]{
+  width: 30px;
+}
+#spud_media_cropper_submit{
+  float: right;
+}

@@ -20,9 +20,14 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 		@page_name = "New Media"
 		add_breadcrumb "New", :new_spud_admin_medium_path
 		@media = SpudMedia.new(params[:spud_media])
-		flash[:notice] = "File uploaded successfully" if @media.save
-		
-		respond_with @media, :location => spud_admin_media_url
+		location = spud_admin_media_path
+		if @media.save
+			flash[:notice] = "File uploaded successfully" 
+			if @media.is_image?
+				location = edit_spud_admin_medium_path(@media.id)
+			end
+		end
+		respond_with @media, :location => location
 	end
 
 	def show
@@ -32,7 +37,10 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 	end
 
 	def update
-		
+		if @media.update_attributes(params[:spud_media])
+			@media.attachment.reprocess!
+		end
+		respond_with @media, :location => spud_admin_media_url
 	end
 
 	def destroy

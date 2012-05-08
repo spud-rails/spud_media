@@ -1,4 +1,5 @@
 <%=content_for :head do%>
-  <%= stylesheet_link_tag "spud/admin/media/application" %>
-<%end%>
+  <%= javascript_include_tag 'spud/admin/media' %>
+  <%= stylesheet_link_tag "spud/admin/media" %>
+<% end %>
 <%= render :template => 'layouts/spud/admin/detail' %>
