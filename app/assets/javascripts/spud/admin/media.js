@@ -5,7 +5,7 @@ Spud = (typeof(Spud) == 'undefined') ? {} : Spud;
 Spud.Admin = (typeof(Spud.Admin) == 'undefined') ? {} : Spud.Admin;
 
 Spud.Admin.Media = new function(){
-  
+
   var self = this;
   var cropimage;
   var cropcontainer;
