@@ -77,10 +77,13 @@ class SpudMedia < ActiveRecord::Base
   # protected files need to hit the rails middle-man first
   # this method will provide the correct url for either case
   def attachment_url
+    style = (is_image? && has_custom_crop?) ? 'cropped' : 'original'
     if Spud::Media.paperclip_storage == :s3 && is_protected
-      return Paperclip::Interpolations.interpolate(Spud::Media.config.storage_url, attachment, 'original')
+      return Paperclip::Interpolations.interpolate(Spud::Media.config.storage_url, attachment, style)
+    elsif Spud::Media.paperclip_storage == :filesystem && is_protected
+      return "/media/protected/#{id}/#{attachment_file_name.parameterize}"
     else
-      return attachment.url
+      return attachment.url(style)
     end
   end
 

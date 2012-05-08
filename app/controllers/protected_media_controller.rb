@@ -12,7 +12,8 @@ class ProtectedMediaController < Spud::ApplicationController
         secure_url = @media.attachment.s3_object.url_for(:read, :secure => true, :expires => 10.minutes)
         redirect_to(secure_url.to_s)
       else
-        filepath = File.join(Rails.root, @media.attachment.path)
+        style = (@media.is_image? && @media.has_custom_crop?) ? 'cropped' : 'original'
+        filepath = File.join(Rails.root, @media.attachment.path(style))
         if !File.exists?(filepath)
           flash[:error] = "The requested file could not be found"
           redirect_to root_path

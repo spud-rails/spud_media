@@ -44,15 +44,16 @@ Spud.Admin.Media = new function(){
 
   this.resizeAndCenter = function(percent){
 
-    // destroy the jcrop object and reinit. set the proper scale.
+    // destroy the jcrop object if it exists already
     if(jcrop){
       jcrop.destroy();
     }
 
+    // initialize jcrop. snap to pre-existing selection if one exists.
     var _width = Math.min(900, (originalWidth * (percent / 100)));
     var _height = originalHeight * (_width / originalWidth);
     cropimage.Jcrop({
-        boxWidth:_width, 
+        boxWidth:_width,
         boxHeight:_height,
         onChange:self.updateCropCoordinates,
         onSelect:self.updateCropCoordinates,
@@ -63,12 +64,11 @@ Spud.Admin.Media = new function(){
       }
     );
 
-    // update height of artbox
+    // update height of artbox to match height of scaled image
     cropartbox.height(_height);
 
-    // using the outer contiainer, center the cropper in the artboard
+    // using the outer container, center the jcrop object in the artboard
     var _left = (900 - _width) / 2;
-    //var _top = (600 - _height) / 2;
     var _top = 0;
     cropcontainer.css({
       left:_left,
@@ -85,7 +85,7 @@ Spud.Admin.Media = new function(){
 
   this.changedMediaCropScale = function(e){
     var val = $(this).val();
-    var percent = parseInt(val);
+    var percent = parseFloat(val);
     if(!percent || percent > 100){
       $(this).val(cropscale);
     }

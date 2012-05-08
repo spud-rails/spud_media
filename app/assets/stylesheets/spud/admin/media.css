@@ -48,7 +48,6 @@ img.size-50-thumb {
   padding: 5px 10px;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
-
   background-image: linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
   background-image: -o-linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
   background-image: -moz-linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
