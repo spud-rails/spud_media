@@ -19,53 +19,59 @@ Spud.Admin.Media = new function(){
   var jcrop;
 
   this.edit = function(){
+    cropimage = $('#spud_media_cropper_image');
+    // IE8 isn't handling the image load event properly, so...
+    setTimeout(function(){
+      if(cropimage[0].complete){
+        self.initializeEditor();
+      }
+      else{
+        self.edit();
+      }
+    }, 50);
+  };
+
+  this.initializeEditor = function(){
 
     // cache some selectors
-    cropimage = $('#spud_media_cropper_image');
     cropcontainer = $('#spud_media_cropper_jcrop_container');
     cropartbox = $('#spud_media_cropper');
 
-    // load the image in a dynamically created element to make sure its definitely ready (IE fix)
-    var img = $('<img/>', {src:cropimage.attr('src')});
-    img.load(function(){
+    // get the original dimensions before scaling the image down
+    originalWidth = cropimage.width();
+    originalHeight = cropimage.height();
 
-      // get the original dimensions before scaling the image down
-      originalWidth = cropimage.width();
-      originalHeight = cropimage.height();
+    // the max width is 900px (at least until the UI can handle more than that)
+    if(originalWidth > 900){
+      maxcropscale = Math.floor(900 / originalWidth * 100);
+    }
+    else{
+      maxcropscale = 100;
+    }
+    cropscaleincrement = Math.ceil(3.0 * (maxcropscale / 100));
 
-      // the max width is 900px (at least until the UI can handle more than that)
-      if(originalWidth > 900){
-        maxcropscale = Math.floor(900 / originalWidth * 100);
-      }
-      else{
-        maxcropscale = 100;
-      }
-      cropscaleincrement = Math.ceil(3.0 * (maxcropscale / 100));
+    // scale down the original if necessary
+    cropscale = parseInt($('#spud_media_crop_s').val());
+    if(cropscale > maxcropscale){
+      $('#spud_media_crop_s').val(maxcropscale);
+      cropscale = maxcropscale;
+    }
 
-      // scale down the original if necessary
-      cropscale = parseInt($('#spud_media_crop_s').val());
-      if(cropscale > maxcropscale){
-        $('#spud_media_crop_s').val(maxcropscale);
-        cropscale = maxcropscale;
-      }
+    // if this is a new image, width and hight will be null. set some starter values.
+    if(!$('#spud_media_crop_w').val()){
+      $('#spud_media_crop_w').val(originalWidth * (maxcropscale / 100));
+      $('#spud_media_crop_h').val(originalHeight * (maxcropscale / 100));
+    }
 
-      // if this is a new image, width and hight will be null. set some starter values.
-      if(!$('#spud_media_crop_w').val()){
-        $('#spud_media_crop_w').val(originalWidth * (maxcropscale / 100));
-        $('#spud_media_crop_h').val(originalHeight * (maxcropscale / 100));
-      }
+    // update height of artbox to match height of scaled image
+    cropartbox.height(originalHeight * (maxcropscale / 100));
 
-      // update height of artbox to match height of scaled image
-      cropartbox.height(originalHeight * (maxcropscale / 100));
+    self.resizeAndCenter(cropscale);
 
-      self.resizeAndCenter(cropscale);
-
-      $('body').on('change', '#spud_media_crop_s', self.changedMediaCropScale);
-      $('body').on('click', '#spud_media_cropper_resize_up, #spud_media_cropper_resize_down', self.incrementMediaCropScale);
-      $('body').on('change', '#spud_media_crop_x, #spud_media_crop_y, #spud_media_crop_w, #spud_media_crop_h', self.changedMediaCropDimensions);
-      $('body').on('keypress', 'form input[type=text]', self.preventSubmitOnEnterKey);
-
-    });
+    $('body').on('change', '#spud_media_crop_s', self.changedMediaCropScale);
+    $('body').on('click', '#spud_media_cropper_resize_up, #spud_media_cropper_resize_down', self.incrementMediaCropScale);
+    $('body').on('change', '#spud_media_crop_x, #spud_media_crop_y, #spud_media_crop_w, #spud_media_crop_h', self.changedMediaCropDimensions);
+    $('body').on('keypress', 'form input[type=text]', self.preventSubmitOnEnterKey);
   };
 
   this.resizeAndCenter = function(percent){
