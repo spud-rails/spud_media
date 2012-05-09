@@ -62,6 +62,7 @@ img.size-50-thumb {
     color-stop(0.33, rgb(204,204,204)),
     color-stop(0.66, rgb(230,230,230))
   );
+  clear: both;
 }
 #spud_media_cropper_toolbar form{
   margin: 0;
