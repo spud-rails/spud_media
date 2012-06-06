@@ -10,7 +10,7 @@ class SpudMedia < ActiveRecord::Base
       attachment.instance.is_protected ? Spud::Media.storage_path_protected : Spud::Media.storage_path
     },
     :url => Spud::Media.storage_url,
-    :styles => lambda { |attachment| attachment.instance.custom_style }
+    :styles => lambda { |attachment| attachment.instance.dynamic_styles }
 
   attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment, :is_protected, :crop_x, :crop_y, :crop_w, :crop_h, :crop_s
 
@@ -27,7 +27,11 @@ class SpudMedia < ActiveRecord::Base
   end
 
   def image_from_type
-    if self.attachment_content_type.blank?
+
+    if self.is_image? || self.is_pdf?
+      return self.attachment.url(:small)
+
+    elsif self.attachment_content_type.blank?
     	return "spud/admin/files_thumbs/dat_thumb.png"
     
     elsif self.attachment_content_type.match(/jpeg|jpg/)
@@ -69,16 +73,27 @@ class SpudMedia < ActiveRecord::Base
     end
   end
 
+  def is_pdf?
+    if self.attachment_content_type.match(/pdf/)
+      return true
+    else
+      return false
+    end
+  end
+
   def has_custom_crop?
     return (crop_x && crop_y && crop_w && crop_h && crop_s)
   end
 
-  def custom_style
-    if is_image? && has_custom_crop?
-      {:cropped => {:geometry => '', :convert_options => "-resize #{crop_s}% -crop #{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"}}
-    else
-      {}
+  def dynamic_styles
+    styles = {}
+    if is_image? || is_pdf?
+      styles[:small] = '75x75'
+      if has_custom_crop?
+        styles[:cropped] = {:geometry => '', :convert_options => "-resize #{crop_s}% -crop #{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"}
+      end
     end
+    return styles
   end
 
   # if you are using S3, attachment.url will automatically point to the S3 url

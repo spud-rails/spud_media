@@ -5,9 +5,15 @@
 img.size-50-thumb {
   height:50px !important;
 }
-
+img.size-75-thumb {
+  max-width:75px;
+  max-height:75px;
+}
 #details{
   padding-bottom: 25px;
+}
+.page_row{
+  padding: 5px 0 5px 5px;
 }
 
 /* Crop tool
