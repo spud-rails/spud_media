@@ -29,7 +29,7 @@ class SpudMedia < ActiveRecord::Base
   def image_from_type
 
     if self.is_image? || self.is_pdf?
-      return self.attachment.url(:small)
+      return self.attachment_url(:small)
 
     elsif self.attachment_content_type.blank?
     	return "spud/admin/files_thumbs/dat_thumb.png"
@@ -141,14 +141,12 @@ private
   def validate_permissions_s3
     if is_protected
       attachment.s3_object(:original).acl = :private
-      if attachment.s3_object(:cropped).exists?
-        attachment.s3_object(:cropped).acl = :private
-      end
+      attachment.s3_object(:cropped).acl = :private if attachment.s3_object(:cropped).exists?
+      attachment.s3_object(:small).acl = :private if attachment.s3_object(:small).exists?
     else
       attachment.s3_object(:original).acl = :public_read
-      if attachment.s3_object(:cropped).exists?
-        attachment.s3_object(:cropped).acl = :public_read
-      end
+      attachment.s3_object(:cropped).acl = :public_read if attachment.s3_object(:cropped).exists?
+      attachment.s3_object(:small).acl = :public_read if attachment.s3_object(:small).exists?
     end
   end
 
