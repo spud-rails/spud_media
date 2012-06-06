@@ -40,7 +40,7 @@
 <div id="spud_media_cropper_outer">
   <div id="spud_media_cropper">
     <div id="spud_media_cropper_jcrop_container">
-      <%= content_tag :img, :src => @media.attachment_url(:original), :id => 'spud_media_cropper_image' %>
+      <img src="<%= @media.attachment_url(:original) %>" id="spud_media_cropper_image" />
     </div>
   </div>
 </div>
