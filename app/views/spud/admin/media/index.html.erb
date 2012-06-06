@@ -7,8 +7,12 @@
 				<div class="page_row">
 					
 				<span class="row_meta">
-					<%=image_tag(media.image_from_type,:class => "size-50-thumb")%>
-					<%=link_to media.attachment.url.split("/").last, media.attachment_url %>					
+					<% if media.is_protected && (media.is_image? || media.is_pdf?) %>
+						<img src="<%= media.image_from_type %>" class="size-50-thumb"
+					<% else %>
+						<%= image_tag(media.image_from_type, :class => "size-50-thumb") %>
+					<% end %>
+					<%= link_to media.attachment.url.split("/").last, media.attachment_url %>					
 				</span>
 
 				<span class="edit_controls">

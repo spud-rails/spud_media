@@ -17,6 +17,7 @@ class SpudMedia < ActiveRecord::Base
   validates_numericality_of :crop_x, :crop_y, :crop_w, :crop_h, :crop_s, :allow_nil => true
 
   before_create :rename_file
+  #after_create :validate_permissions
   before_update :validate_permissions
 
   def rename_file
