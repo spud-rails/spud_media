@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    spud_media (0.9.3)
+    spud_media (0.9.4)
       paperclip
       rails (~> 3.2.2)
       spud_core (>= 0.8.0, < 0.9.0)

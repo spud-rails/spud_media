@@ -88,7 +88,7 @@ class SpudMedia < ActiveRecord::Base
   def dynamic_styles
     styles = {}
     if is_image? || is_pdf?
-      styles[:small] = '75x75'
+      styles[:small] = '50'
       if has_custom_crop?
         styles[:cropped] = {:geometry => '', :convert_options => "-resize #{crop_s}% -crop #{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"}
       end

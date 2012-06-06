@@ -3,11 +3,8 @@
 */
 
 img.size-50-thumb {
-  height:50px !important;
-}
-img.size-75-thumb {
-  max-width:75px;
-  max-height:75px;
+  width:50px;
+  padding-right:5px;
 }
 #details{
   padding-bottom: 25px;
