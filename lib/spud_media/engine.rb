@@ -11,7 +11,7 @@ module Spud
 			end
 			initializer :assets do |config| 
 				Rails.application.config.assets.precompile += [ 
-				     "spud/admin/media*"
+				     "spud/admin/media*","spud/admin/media.js"
 				]
 			 end
 		 end
