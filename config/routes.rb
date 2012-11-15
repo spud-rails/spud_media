@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 			resources :media do
         put 'set_access', :on => :member
       end
-      resources :media_picker, :only => :index
+      resources :media_picker, :only => [:index, :create]
 		end
 	end
 

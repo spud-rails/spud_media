@@ -3,7 +3,6 @@
   <title>Spud Media Picker</title>
   <%= stylesheet_link_tag *Spud::Core.config.admin_stylesheets %>
   <%= javascript_include_tag *Spud::Core.config.admin_javascripts %>
-  <%= javascript_include_tag 'spud/admin/media/picker' %>
   <%= javascript_include_tag 'tiny_mce/tiny_mce_popup' %>
   <%= csrf_meta_tags %>
 </head>
@@ -18,10 +17,16 @@
     </div>
 
     <div class="spud_media_picker_tab_body spud_media_picker_tab_upload">
-      <%= form_for :spud_media do |f| %>
+      <%= form_for :spud_media, :html => {:class => 'spud_media_picker_upload_form', :target => 'spud_media_picker_upload_target'} do |f| %>
         <%= f.label :attachment, 'Upload New File' %>
         <%= f.file_field :attachment%>
-        <%= f.submit 'Upload', :class => 'btn btn-mini btn-primary' %>
+        <div class="progress progress-striped active spud_media_picker_upload_progress">
+          <div class="bar"></div>
+        </div>
+        <div class="spud_media_picker_buttons">
+          <%= f.submit 'Upload', :class => 'btn btn-mini btn-primary spud_media_picker_tab_upload_submit' %>
+          <%= link_to 'Cancel', '#', :class => 'btn btn-mini spud_media_picker_button_cancel' %>
+        </div>
       <% end %>
     </div>
 
@@ -45,6 +50,41 @@
     </div>
 
     <div class="spud_media_picker_tab_body spud_media_picker_tab_advanced">
+      <div class="spud_media_picker_option spud_media_picker_option_selected_file">
+        <label>Selected File:</label>
+        <input name="spud_media_picker_option_selected_file" type="text" disabled="disabled" />
+      </div>
+      <div class="spud_media_picker_option spud_media_picker_option_type">
+        <label>Media Type:</label>
+        <input name="spud_media_picker_option_type" type="text" disabled="disabled" />
+      </div>
+      <div class="spud_media_picker_option spud_media_picker_option_target">
+        <label>Open Link In:</label>
+        <select name="spud_media_picker_option_target">
+          <option value="">Same Window</option>
+          <option value="_blank">New Window</option>
+        </select>
+      </div>
+      <div class="spud_media_picker_option spud_media_picker_option_text">
+        <label>Link Text:</label>
+        <input name="spud_media_picker_option_text" type="text" />
+      </div>
+      <div class="spud_media_picker_option spud_media_picker_option_float">
+        <label>Float Image:</label>
+        <select name="spud_media_picker_option_float">
+          <option value="none">Normal</option>
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+        </select>
+      </div>
+      <div class="spud_media_picker_option spud_media_picker_option_title">
+        <label>Title:</label>
+        <input name="spud_media_picker_option_title" type="text" />
+      </div>
+      <div class="spud_media_picker_option spud_media_picker_option_dimensions">
+        <label>Dimensions:</label>
+        <input name="spud_media_picker_option_dimension_w" type="text" placeholder="auto" /> px by <input name="spud_media_picker_option_dimension_h" type="text" placeholder="auto" /> px
+      </div>
       <div class="spud_media_picker_buttons">
         <%= link_to 'Insert', '#', :class => 'btn btn-mini btn-primary spud_media_picker_button_insert' %>
         <%= link_to 'Cancel', '#', :class => 'btn btn-mini spud_media_picker_button_cancel' %>
@@ -52,6 +92,8 @@
     </div>
 
   </div>
+
+  <iframe id="spud_media_picker_upload_target" name="spud_media_picker_upload_target" style="display:none;"></iframe>
 
   <script>
     $(document).ready(spud.admin.mediapicker.init);

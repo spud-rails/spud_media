@@ -44,18 +44,20 @@
 
       ed.addCommand('spudMediaInsertSelected', function(ui, data){
         if(data.type == 'img'){
-          var img = ed.dom.create('img', {
-            src: data.url
+          var img = ed.dom.createHTML('img', {
+            src: data.url,
+            title: data.title,
+            style: data.style,
+            width: data.width,
+            height: data.height
           });
-          var end = ed.selection.getEnd();
-          ed.dom.insertAfter(img, end);
-
-          // replaces current node...
-          //ed.selection.setNode(img);
+          ed.execCommand('mceInsertContent', false, img);
         }
         else{
-          var link = ed.dom.createHTML('a', {href: data.url}, 'Hello, World');
-
+          var link = ed.dom.createHTML('a', {
+            href: data.url,
+            target: data.target
+          }, data.text);
           ed.execCommand('mceInsertContent', false, link);
         }
       });
@@ -66,9 +68,9 @@
       * @param {tinymce.ControlManager} cm
       * @param {node} n
       */
-      ed.onNodeChange.add(function(ed, cm, n) {
-        cm.setActive('spud_media_picker', n.nodeName == 'IMG');
-      });
+      // ed.onNodeChange.add(function(ed, cm, n) {
+      //   cm.setActive('spud_media_picker', n.nodeName == 'IMG');
+      // });
     },
 
     /**
