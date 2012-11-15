@@ -10,6 +10,9 @@
 
 (function() {
 
+  spud.admin.editor.registerPlugin('spud_media_picker');
+  spud.admin.editor.registerButton('spud_media_picker');
+
   tinymce.create('tinymce.plugins.SpudMediaPicker', {
     /**
      * Initializes the plugin, this will be executed after the plugin has been created.
@@ -39,7 +42,7 @@
       ed.addButton('spud_media_picker', {
         title: 'Insert Spud Media',
         cmd: 'spudMediaShowPicker',
-        image: '/assets/spud/admin/media/picker.png'
+        image: '/assets/spud/admin/media_tiny.png'
       });
 
       ed.addCommand('spudMediaInsertSelected', function(ui, data){
