@@ -1,0 +1,19 @@
+<%= content_tag :div, :class => 'spud_media_picker_item', 
+  'data-id' => media.id,
+  'data-type' => (media.is_image? ? 'img' : 'file'),
+  'data-url' => media.attachment.url,
+  'data-name' => media.attachment_file_name,
+  'data-size' => media.attachment_file_size,
+  'data-lastmod' => media.attachment_updated_at.strftime("%l:%M %p, %D"),
+  'data-protected' => (media.is_protected ? 'Yes' : 'No') do %>
+  <span class="spud_media_picker_item_thumb">
+    <% if media.is_protected && (media.is_image? || media.is_pdf?) %>
+      <img src="<%= media.image_from_type %>"/>
+    <% else %>
+      <%= image_tag(media.image_from_type) %>
+    <% end %>
+  </span>
+  <span class="spud_media_picker_item_filename">
+    <%= media.attachment_file_name %>
+  </span>
+<% end %>

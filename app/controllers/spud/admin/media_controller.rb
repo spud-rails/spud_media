@@ -1,5 +1,5 @@
 class Spud::Admin::MediaController < Spud::Admin::ApplicationController
-	layout 'spud/admin/media/detail'
+	layout 'layouts/spud/admin/detail'
 	add_breadcrumb "Media", :spud_admin_media_path
 	belongs_to_spud_app :media
 	before_filter :load_media,:only => [:edit,:update,:show,:destroy,:set_private,:set_access]

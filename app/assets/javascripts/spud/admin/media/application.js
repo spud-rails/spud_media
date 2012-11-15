@@ -1,10 +1,9 @@
 //= require jcrop/js/jquery.Jcrop
+//= require spud/admin/media/plugin
+//= require spud/admin/media/picker
 //= require_self
 
-Spud = (typeof(Spud) == 'undefined') ? {} : Spud;
-Spud.Admin = (typeof(Spud.Admin) == 'undefined') ? {} : Spud.Admin;
-
-Spud.Admin.Media = new function(){
+spud.admin.media = new function(){
 
   var self = this;
   var cropimage;
@@ -51,7 +50,7 @@ Spud.Admin.Media = new function(){
     cropscaleincrement = Math.ceil(3.0 * (maxcropscale / 100));
 
     // scale down the original if necessary
-    cropscale = parseInt($('#spud_media_crop_s').val());
+    cropscale = parseInt($('#spud_media_crop_s').val(), 10);
     if(cropscale > maxcropscale){
       $('#spud_media_crop_s').val(maxcropscale);
       cropscale = maxcropscale;
@@ -114,14 +113,14 @@ Spud.Admin.Media = new function(){
 
   this.changedMediaCropScale = function(e){
     var val = $(this).val();
-    var percent = parseInt(val);
+    var percent = parseInt(val, 10);
     if(!percent || percent > maxcropscale){
       $(this).val(maxcropscale);
     }
     else{
       $(this).val(percent);
       cropscale = percent;
-      self.resizeAndCenter(percent); 
+      self.resizeAndCenter(percent);
     }
   };
 
@@ -136,7 +135,7 @@ Spud.Admin.Media = new function(){
     $('#spud_media_crop_s').val(cropscale);
     self.resizeAndCenter(cropscale);
     return false;
-  }
+  };
 
   this.changedMediaCropDimensions = function(e){
     var selection = self.getSelectFields();
@@ -146,10 +145,10 @@ Spud.Admin.Media = new function(){
   };
 
   this.getSelectFields = function(){
-    var x = parseInt($('#spud_media_crop_x').val());
-    var y = parseInt($('#spud_media_crop_y').val());
-    var w = parseInt($('#spud_media_crop_w').val());
-    var h = parseInt($('#spud_media_crop_h').val());
+    var x = parseInt($('#spud_media_crop_x').val(), 10);
+    var y = parseInt($('#spud_media_crop_y').val(), 10);
+    var w = parseInt($('#spud_media_crop_w').val(), 10);
+    var h = parseInt($('#spud_media_crop_h').val(), 10);
     var x2 = x + w;
     var y2 = y + h;
     if(isNaN(x) || isNaN(w) || isNaN(x2) || isNaN(y2)){
@@ -158,7 +157,7 @@ Spud.Admin.Media = new function(){
     else{
       return [x * (100 / cropscale), y * (100 / cropscale), x2 * (100 / cropscale), y2 * (100 / cropscale)];
     }
-  }
+  };
 
   this.preventSubmitOnEnterKey = function(e){
     if(e.keyCode == 13) {

@@ -1,0 +1,61 @@
+<html>
+<head>
+  <title>Spud Media Picker</title>
+  <%= stylesheet_link_tag *Spud::Core.config.admin_stylesheets %>
+  <%= javascript_include_tag *Spud::Core.config.admin_javascripts %>
+  <%= javascript_include_tag 'spud/admin/media/picker' %>
+  <%= javascript_include_tag 'tiny_mce/tiny_mce_popup' %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="spud_media_picker">
+
+  <div class="spud_media_picker_container">
+
+    <div class="spud_media_picker_tabs">
+      <a class="spud_media_picker_tab" href="#spud_media_picker_tab_upload">Upload</a>
+      <a class="spud_media_picker_tab" href="#spud_media_picker_tab_choose">Choose</a>
+      <a class="spud_media_picker_tab" href="#spud_media_picker_tab_advanced">Advanced</a>
+    </div>
+
+    <div class="spud_media_picker_tab_body spud_media_picker_tab_upload">
+      <%= form_for :spud_media do |f| %>
+        <%= f.label :attachment, 'Upload New File' %>
+        <%= f.file_field :attachment%>
+        <%= f.submit 'Upload', :class => 'btn btn-mini btn-primary' %>
+      <% end %>
+    </div>
+
+    <div class="spud_media_picker_tab_body spud_media_picker_tab_choose">
+      <div class="spud_media_picker_list">
+        <%= render :partial => 'media', :collection => @media %>
+      </div>
+      <div class="spud_media_picker_details">
+        <img src="" class="spud_media_picker_details_thumb" />
+        <ul class="spud_media_picker_details_meta">
+          <li>File Name: <span class="spud_media_picker_details_name"></span></li>
+          <li>File Size: <span class="spud_media_picker_details_size"></span></li>
+          <li>Last Modified: <span class="spud_media_picker_details_lastmod"></span></li>
+          <li>Protected: <span class="spud_media_picker_details_protected"></span></li>
+        </ul>
+      </div>
+      <div class="spud_media_picker_buttons">
+        <%= link_to 'Use Selected', '#', :class => 'btn btn-mini btn-primary spud_media_picker_button_use_selected' %>
+        <%= link_to 'Cancel', '#', :class => 'btn btn-mini spud_media_picker_button_cancel' %>
+      </div>
+    </div>
+
+    <div class="spud_media_picker_tab_body spud_media_picker_tab_advanced">
+      <div class="spud_media_picker_buttons">
+        <%= link_to 'Insert', '#', :class => 'btn btn-mini btn-primary spud_media_picker_button_insert' %>
+        <%= link_to 'Cancel', '#', :class => 'btn btn-mini spud_media_picker_button_cancel' %>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    $(document).ready(spud.admin.mediapicker.init);
+  </script>
+
+</body>
+</html>
