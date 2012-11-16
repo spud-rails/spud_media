@@ -10,6 +10,7 @@
 
 (function() {
 
+  // Tell spud about our plugin and button
   spud.admin.editor.registerPlugin('spud_media_picker');
   spud.admin.editor.registerButton('spud_media_picker');
 

@@ -1,5 +1,5 @@
 spud.admin.mediapicker = new function(){
-  
+
   var self = this;
   var supportsHtml5Upload = false;
   var selectedFile = {};
@@ -18,6 +18,7 @@ spud.admin.mediapicker = new function(){
     $('.spud_media_picker_tabs a').first().click();
     $('.spud_media_picker_tab_advanced').on('spud_media_picker_tab_activated', self.activatedAdvancedTab);
     $('.spud_media_picker_option_dimensions').on('blur', 'input', self.dimensionsChanged);
+    $('.spud_media_picker_option').on('keyup', 'input[type=text]', self.pickerOptionKeyDown);
   };
 
   self.clickedTab = function(e){
@@ -150,6 +151,7 @@ spud.admin.mediapicker = new function(){
     else{
       $('.spud_media_picker_option_target').show();
       $('.spud_media_picker_option_text').show();
+      $('.spud_media_picker_option_text input').val(tinyMCEPopup.editor.selection.getContent());
       $('.spud_media_picker_option_float').hide();
       $('.spud_media_picker_option_title').hide();
       $('.spud_media_picker_option_dimensions').hide();
@@ -162,7 +164,6 @@ spud.admin.mediapicker = new function(){
     img.onload = function(){
       _originalWidth = img.width;
       _originalHeight = img.height;
-      console.log(_originalWidth, _originalHeight);
     };
     img.src = url;
   };
@@ -201,8 +202,18 @@ spud.admin.mediapicker = new function(){
     else{
       selectedFile.target = $('select[name="spud_media_picker_option_target"]').val();
       selectedFile.text = $('input[name="spud_media_picker_option_text"]').val();
+      if(!selectedFile.text){
+        window.alert("Link Text is a required field.");
+        return;
+      }
     }
     tinyMCEPopup.editor.execCommand('spudMediaInsertSelected', false, selectedFile);
     tinyMCEPopup.close();
+  };
+
+  self.pickerOptionKeyDown = function(e){
+    if(e.keyCode == 13){
+      self.clickedInsert(e);
+    }
   };
 };
