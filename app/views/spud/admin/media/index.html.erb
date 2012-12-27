@@ -1,32 +1,32 @@
 <%=content_for :data_controls do%>
-<%=link_to "Upload File",new_spud_admin_medium_path(),:class => "btn btn-primary",:title => "Upload File"%>
+<%=link_to "Upload File",spud_core.new_admin_medium_path(),:class => "btn btn-primary",:title => "Upload File"%>
 <%end%>
 <%=content_for :detail do%>
 	<div class="page_list">
 			<%@media.each do |media|%>
 				<div class="page_row">
-					
+
 				<span class="row_meta">
 					<% if media.is_protected && (media.is_image? || media.is_pdf?) %>
 						<img src="<%= media.image_from_type %>" class="size-50-thumb" />
 					<% else %>
 						<%= image_tag(media.image_from_type, :class => "size-50-thumb") %>
 					<% end %>
-					<%= link_to media.attachment.url.split("/").last, media.attachment_url %>					
+					<%= link_to media.attachment.url.split("/").last, media.attachment_url %>
 				</span>
 
 				<span class="edit_controls">
 					<% if media.is_image? %>
-						<%= link_to 'Crop', edit_spud_admin_medium_path(media.id), :class => 'btn' %>
+						<%= link_to 'Crop', spud_core.edit_admin_medium_path(media.id), :class => 'btn' %>
 					<% end %>
 					<% if media.is_protected %>
-						<%= link_to raw('<i class="icon-lock"></i> Protected'), set_access_spud_admin_medium_path(media.id, :protected => false), :method => :put, :class => 'btn' %>
+						<%= link_to raw('<i class="icon-lock"></i> Protected'), spud_core.set_access_admin_medium_path(media.id, :protected => false), :method => :put, :class => 'btn' %>
 					<% else %>
-						<%= link_to 'Public', set_access_spud_admin_medium_path(media.id, :protected => true), :method => :put, :class => 'btn' %>
+						<%= link_to 'Public', spud_core.set_access_admin_medium_path(media.id, :protected => true), :method => :put, :class => 'btn' %>
 					<% end %>
-					<%=link_to "Remove", spud_admin_medium_path(:id => media.id),:method => :delete,:class => 'btn btn-danger',:confirm => "Are you sure you want to remove this file?"%>
+					<%=link_to "Remove", spud_core.admin_medium_path(:id => media.id),:method => :delete,:class => 'btn btn-danger',:confirm => "Are you sure you want to remove this file?"%>
 				</span>
-				
+
 				<br style="clear:both;"/>
 			</div>
 			<%end%>

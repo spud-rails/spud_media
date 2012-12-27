@@ -1,7 +1,7 @@
 <%= error_messages_for(@media) %>
 
 <div id="spud_media_cropper_toolbar">
-  <%= form_for @media, :url => spud_admin_medium_path(@media) do |f| %>
+  <%= form_for @media, :url => spud_core.admin_medium_path(@media) do |f| %>
 
     <div class="spud_media_cropper_toolbar_item">
       <%= label_tag :x %>
@@ -32,7 +32,7 @@
 
     <div id="spud_media_cropper_toolbar_actions">
       <%= f.submit 'Crop', :id => 'spud_media_cropper_submit', :class => 'btn btn-mini btn-primary' %>
-      <%= link_to "Don't Crop", spud_admin_media_path, :class => 'btn btn-mini' %>
+      <%= link_to "Don't Crop", spud_core.admin_media_path, :class => 'btn btn-mini' %>
     </div>
   <% end %>
 </div>

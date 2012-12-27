@@ -1,17 +1,17 @@
 
-  
 
-  <%=form_for @media,:url => spud_admin_media_path(),:html=>{:class=>"form-horizontal", :multipart => true} do |f|%>
+
+  <%=form_for @media,:url => spud_core.admin_media_path(),:html=>{:class=>"form-horizontal", :multipart => true} do |f|%>
   <fieldset>
 	  <legend>Upload Media</legend>
-	  
+
 	  <div class="control-group">
 		  <%=f.label :attachment, "Choose File",:class =>"control-label"%>
       <div class="controls">
   		  <%=f.file_field :attachment%>
       </div>
 	  </div>
-	  
+
     <div class="control-group">
       <%= f.label :is_protected, 'Protected File', :class => 'control-label' %>
       <div class="controls">
@@ -20,7 +20,7 @@
     </div>
 
   <div class="form-actions">
-      <%=f.submit "Upload", :class=>"btn btn-primary","data-loading-text"=>"Uploading..."%> or <%=link_to "cancel",spud_admin_media_path,:class => "btn"%>
+      <%=f.submit "Upload", :class=>"btn btn-primary","data-loading-text"=>"Uploading..."%> or <%=link_to "cancel",spud_core.admin_media_path,:class => "btn"%>
     </div>
   <%end%>
 

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Spud::Media::VERSION
   s.authors     = ["David Estes"]
   s.email       = ["destes@redwindsw.com"]
-  s.homepage    = "http://www.github.com/davydotcom/spud_media"
+  s.homepage    = "http://www.github.com/spud-rails/spud_media"
   s.summary     = "Spud File upload/management module"
   s.description = "Spud Media allows you to upload files to your site and manage them in the spud administrative panel. It also uses paperclip and supports s3 storage"
 
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.2"
-  s.add_dependency 'spud_core', ">= 0.9.0"
+  s.add_dependency 'spud_core', ">= 0.10.0"
 
   s.add_dependency "paperclip", ">= 0"
   # s.add_dependency "jquery-rails"
