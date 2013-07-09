@@ -2,8 +2,8 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 	layout 'layouts/spud/admin/detail'
 	add_breadcrumb "Media", :spud_admin_media_path
 	belongs_to_spud_app :media
-	before_filter :load_media,:only => [:edit,:update,:show,:destroy,:set_private,:set_access]
-	
+	before_filter :load_media,:only => [:edit,:update,:show,:destroy,:set_private,:set_access, :replace]
+
 	def index
 		@media = SpudMedia.order("created_at DESC").paginate :page => params[:page]
 		respond_with @media
@@ -22,7 +22,7 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 		@media = SpudMedia.new(params[:spud_media])
 		location = spud_admin_media_path
 		if @media.save
-			flash[:notice] = "File uploaded successfully" 
+			flash[:notice] = "File uploaded successfully"
 			if @media.is_image?
 				location = edit_spud_admin_medium_path(@media.id)
 			end
@@ -41,6 +41,9 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 			flash[:error] = "Unable to edit #{@media.attachment_file_name}"
 			redirect_to spud_admin_media_url
 		end
+	end
+
+	def replace
 	end
 
 	def update
@@ -68,6 +71,6 @@ private
 			flash[:error] = "Media Asset not found!"
 			redirect_to spud_admin_media_url() and return
 		end
-		
+
 	end
 end

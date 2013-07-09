@@ -1,0 +1,26 @@
+
+
+
+  <%=form_for @media,:url => spud_admin_medium_path(:id => @media.id),:html=>{:class=>"form-horizontal", :multipart => true, :method => :put} do |f|%>
+  <fieldset>
+	  <legend>Replace File</legend>
+
+	  <div class="control-group">
+		  <%=f.label :attachment, "Choose File",:class =>"control-label"%>
+      <div class="controls">
+  		  <%=f.file_field :attachment%>
+      </div>
+	  </div>
+
+    <div class="control-group">
+      <%= f.label :is_protected, 'Protected File', :class => 'control-label' %>
+      <div class="controls">
+        <%= f.check_box :is_protected %>
+      </div>
+    </div>
+
+  <div class="form-actions">
+      <%=f.submit "Upload", :class=>"btn btn-primary","data-loading-text"=>"Uploading..."%> or <%=link_to "cancel",spud_admin_media_path,:class => "btn"%>
+    </div>
+  <%end%>
+

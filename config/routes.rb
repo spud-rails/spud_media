@@ -2,9 +2,10 @@ Rails.application.routes.draw do
 	namespace :spud do
 		namespace :admin do
 			resources :media do
-        put 'set_access', :on => :member
-      end
-      resources :media_picker, :only => [:index, :create]
+		        put 'set_access', :on => :member
+		        get 'replace', :on => :member
+			end
+			resources :media_picker, :only => [:index, :create]
 		end
 	end
 
