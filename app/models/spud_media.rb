@@ -3,6 +3,8 @@ class SpudMedia < ActiveRecord::Base
 	has_attached_file :attachment,
     :storage => Spud::Media.paperclip_storage,
     :s3_credentials => Spud::Media.s3_credentials,
+    :s3_host_name => Spud::Media.s3_host_name,
+
     :s3_permissions => lambda { |attachment, style|
       attachment.instance.is_protected ? 'private' : 'public-read'
     },
