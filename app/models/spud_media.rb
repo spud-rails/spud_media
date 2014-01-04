@@ -14,10 +14,10 @@ class SpudMedia < ActiveRecord::Base
     :url => Spud::Media.storage_url,
     :styles => lambda { |attachment| attachment.instance.dynamic_styles }
 
-  attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment, :is_protected, :crop_x, :crop_y, :crop_w, :crop_h, :crop_s
+  # attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment, :is_protected, :crop_x, :crop_y, :crop_w, :crop_h, :crop_s
 
   validates_numericality_of :crop_x, :crop_y, :crop_w, :crop_h, :crop_s, :allow_nil => true
-
+  validates :attachment, :presence => true
   before_create :rename_file
   before_update :rename_file
   #after_create :validate_permissions
@@ -29,13 +29,17 @@ class SpudMedia < ActiveRecord::Base
       return
     end
     # remove periods and other unsafe characters from file name to make routing easier
-    extension = File.extname(attachment_file_name)
-    filename = attachment_file_name.chomp(extension).parameterize
-    attachment.instance_write :file_name, filename + extension
+    if self.attachment_file_name.blank? == false
+      extension = File.extname(attachment_file_name)
+      filename = attachment_file_name.chomp(extension).parameterize
+      attachment.instance_write :file_name, filename + extension
+    end
   end
 
   def image_from_type
-
+    if self.attachment_content_type.blank?
+      return "spud/admin/files_thumbs/dat_thumb.png"
+    end
     if self.is_image? || self.is_pdf?
       return self.attachment_url(:small)
 
@@ -74,7 +78,7 @@ class SpudMedia < ActiveRecord::Base
   end
 
   def is_image?
-    if self.attachment_content_type.match(/jpeg|jpg|png/)
+    if self.attachment_content_type.blank? == false && self.attachment_content_type.match(/jpeg|jpg|png/)
       return true
     else
       return false

@@ -19,7 +19,7 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 	def create
 		@page_name = "New Media"
 		add_breadcrumb "New", :new_spud_admin_medium_path
-		@media = SpudMedia.new(params[:spud_media])
+		@media = SpudMedia.new(media_params)
 		location = spud_admin_media_path
 		if @media.save
 			flash[:notice] = "File uploaded successfully"
@@ -47,7 +47,7 @@ class Spud::Admin::MediaController < Spud::Admin::ApplicationController
 	end
 
 	def update
-		if @media.update_attributes(params[:spud_media])
+		if @media.update_attributes(media_params)
 			@media.attachment.reprocess!
 		end
 		respond_with @media, :location => spud_admin_media_url
@@ -72,5 +72,9 @@ private
 			redirect_to spud_admin_media_url() and return
 		end
 
+	end
+
+	def media_params
+		params.require(:spud_media).permit(:attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment, :is_protected, :crop_x, :crop_y, :crop_w, :crop_h, :crop_s)
 	end
 end

@@ -1,5 +1,6 @@
 require 'spud_core'
 require 'paperclip'
+require 'tinymce-rails'
 module Spud
 	module Media
 		 class Engine < Rails::Engine

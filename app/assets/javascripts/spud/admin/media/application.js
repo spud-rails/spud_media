@@ -19,15 +19,15 @@ spud.admin.media = new function(){
 
   this.edit = function(){
     cropimage = $('#spud_media_cropper_image');
-    // IE8 isn't handling the image load event properly, so...
-    setTimeout(function(){
+
       if(cropimage[0].complete){
-        self.initializeEditor();
+        self.initializeEditor.call(self);
       }
       else{
-        self.edit();
+        $(copimage[0]).load(function() {
+          self.initializeEditor.call(self);
+        })
       }
-    }, 50);
   };
 
   this.initializeEditor = function(){
@@ -42,7 +42,7 @@ spud.admin.media = new function(){
 
     // the max width is 900px (at least until the UI can handle more than that)
     if(originalWidth > 900){
-      maxcropscale = Math.floor(900 / originalWidth * 100);
+      maxcropscale = Math.floor((900 / originalWidth)* 100);
     }
     else{
       maxcropscale = 100;
@@ -65,7 +65,9 @@ spud.admin.media = new function(){
     // update height of artbox to match height of scaled image
     cropartbox.height(originalHeight * (maxcropscale / 100));
 
+
     self.resizeAndCenter(cropscale);
+
 
     $('body').on('change', '#spud_media_crop_s', self.changedMediaCropScale);
     $('body').on('click', '#spud_media_cropper_resize_up, #spud_media_cropper_resize_down', self.incrementMediaCropScale);
@@ -81,8 +83,8 @@ spud.admin.media = new function(){
     }
 
     // initialize jcrop. snap to pre-existing selection if one exists.
-    var _width = Math.min(900, (originalWidth * (percent / 100)));
-    var _height = originalHeight * (_width / originalWidth);
+    var _width = Math.floor(Math.min(900, (originalWidth * (percent / 100))));
+    var _height = Math.floor(originalHeight * (_width / originalWidth));
     cropimage.Jcrop({
         boxWidth:_width,
         boxHeight:_height,
@@ -96,8 +98,8 @@ spud.admin.media = new function(){
     );
 
     // using the outer container, center the jcrop object in the artboard
-    var _left = (900 - _width) / 2;
-    var _top = (cropartbox.height() - _height) / 6;
+    var _left = Math.floor((900 - _width) / 2);
+    var _top = Math.floor((cropartbox.height() - _height) / 6);
     cropcontainer.css({
       left:_left,
       top:_top

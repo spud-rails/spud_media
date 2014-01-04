@@ -11,7 +11,7 @@ class Spud::Admin::MediaPickerController < Spud::Admin::ApplicationController
   end
 
   def create
-    @media = SpudMedia.new(params[:spud_media])
+    @media = SpudMedia.new(media_params)
     if @media.save
       if request.xhr?
         render 'create', :status => 200
@@ -23,6 +23,11 @@ class Spud::Admin::MediaPickerController < Spud::Admin::ApplicationController
     else
       render nil, :status => 422
     end
+  end
+
+private
+  def media_params
+    params.require(:spud_media).permit(:attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment, :is_protected, :crop_x, :crop_y, :crop_w, :crop_h, :crop_s)
   end
 
 end
