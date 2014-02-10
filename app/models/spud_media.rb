@@ -40,7 +40,7 @@ class SpudMedia < ActiveRecord::Base
     if self.attachment_content_type.blank?
       return "spud/admin/files_thumbs/dat_thumb.png"
     end
-    if self.is_image? || self.is_pdf?
+    if self.is_image?
       return self.attachment_url(:small)
 
     elsif self.attachment_content_type.blank?
@@ -99,7 +99,7 @@ class SpudMedia < ActiveRecord::Base
 
   def dynamic_styles
     styles = {}
-    if is_image? || is_pdf?
+    if is_image?
       styles[:small] = '50'
       if has_custom_crop?
         styles[:cropped] = {:geometry => '', :convert_options => "-resize #{crop_s}% -crop #{crop_w}x#{crop_h}+#{crop_x}+#{crop_y}"}
