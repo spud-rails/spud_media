@@ -17,15 +17,19 @@
 
 				<span class="edit_controls">
 					<% if media.is_image? %>
-						<%= link_to 'Crop', edit_spud_admin_medium_path(media.id), :class => 'btn' %>
+						<%= link_to edit_spud_admin_medium_path(media.id), :class => 'btn btn-sm btn-default' do%>
+						Crop
+						<%end%>
 					<% end %>
 					<% if media.is_protected %>
-						<%= link_to raw('<i class="icon-lock"></i> Protected'), set_access_spud_admin_medium_path(media.id, :protected => false), :method => :put, :class => 'btn' %>
+						<%= link_to raw('<i class="icon-lock"></i> Protected'), set_access_spud_admin_medium_path(media.id, :protected => false), :method => :put, :class => 'btn btn-sm btn-default' %>
 					<% else %>
-						<%= link_to 'Public', set_access_spud_admin_medium_path(media.id, :protected => true), :method => :put, :class => 'btn' %>
+						<%= link_to 'Public', set_access_spud_admin_medium_path(media.id, :protected => true), :method => :put, :class => 'btn btn-sm btn-default' %>
 					<% end %>
-					<%= link_to "Replace", replace_spud_admin_medium_path(:id => media.id), :class => "btn"%>
-					<%=link_to "Remove", spud_admin_medium_path(:id => media.id),:method => :delete,:class => 'btn btn-danger',:confirm => "Are you sure you want to remove this file?"%>
+					<%= link_to "Replace", replace_spud_admin_medium_path(:id => media.id), :class => "btn btn-sm btn-default"%>
+					<%=link_to spud_admin_medium_path(:id => media.id),:method => :delete,:class => 'btn btn-danger',:confirm => "Are you sure you want to remove this file?" do%>
+						<span class="glyphicon glyphicon-trash"></span>
+					<%end%>
 				</span>
 
 				<br style="clear:both;"/>
