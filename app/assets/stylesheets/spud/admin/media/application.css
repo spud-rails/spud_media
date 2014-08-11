@@ -49,9 +49,9 @@ img.size-50-thumb {
 #spud_media_cropper_toolbar{
   font-size: 11px;
   background: #ccc;
-  width: 882px;
+  width: 900px;
   margin:0 auto;
-  padding: 5px 10px;
+  padding: 10px 10px;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
   background-image: linear-gradient(bottom, rgb(204,204,204) 33%, rgb(230,230,230) 66%);
@@ -82,8 +82,8 @@ user-select: none;
   display: inline-block;
   margin: 0;
   font-size: 11px;
-  height: 11px;
-  line-height: 11px;
+  height: 15px;
+  line-height: 15px;
 }
 #spud_media_cropper_toolbar input[type=text]{
   width: 30px;

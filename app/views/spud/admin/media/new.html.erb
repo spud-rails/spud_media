@@ -5,22 +5,25 @@
   <fieldset>
 	  <legend>Upload Media</legend>
 	  
-	  <div class="control-group">
-		  <%=f.label :attachment, "Choose File",:class =>"control-label"%>
-      <div class="controls">
+	  <div class="form-group">
+		  <%=f.label :attachment, "Choose File",:class =>"control-label col-sm-4"%>
+      <div class="col-sm-8">
   		  <%=f.file_field :attachment%>
       </div>
 	  </div>
 	  
-    <div class="control-group">
-      <%= f.label :is_protected, 'Protected File', :class => 'control-label' %>
-      <div class="controls">
+    <div class="form-group">
+      <%= f.label :is_protected, 'Protected File', :class => 'control-label col-sm-4' %>
+      <div class="col-sm-8">
         <%= f.check_box :is_protected %>
       </div>
     </div>
 
-  <div class="form-actions">
+  <div class="form-group">
+    <div class="col-sm-8 col-sm-offset-4">
       <%=f.submit "Upload", :class=>"btn btn-primary","data-loading-text"=>"Uploading..."%> or <%=link_to "cancel",spud_admin_media_path,:class => "btn"%>
+    </div>
+      
     </div>
   <%end%>
 

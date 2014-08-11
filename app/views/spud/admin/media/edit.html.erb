@@ -26,13 +26,13 @@
     <div class="spud_media_cropper_toolbar_item">
       <%= label_tag :scale, 'Size' %>
       <%= f.hidden_field :crop_s %>
-      <a href="#" id="spud_media_cropper_resize_up"><i class="icon-plus"></i></a>
-      <a href="#" id="spud_media_cropper_resize_down"><i class="icon-minus"></i></a>
+      <a href="#" id="spud_media_cropper_resize_up"><span class="glyphicon glyphicon-plus"></span></a>
+      <a href="#" id="spud_media_cropper_resize_down"><span class="glyphicon glyphicon-minus"></span></a>
     </div>
 
     <div id="spud_media_cropper_toolbar_actions">
-      <%= f.submit 'Crop', :id => 'spud_media_cropper_submit', :class => 'btn btn-mini btn-primary' %>
-      <%= link_to "Don't Crop", spud_admin_media_path, :class => 'btn btn-mini' %>
+      <%= f.submit 'Crop', :id => 'spud_media_cropper_submit', :class => 'btn btn-xs btn-primary' %>
+      <%= link_to "Don't Crop", spud_admin_media_path, :class => 'btn btn-xs' %>
     </div>
   <% end %>
 </div>

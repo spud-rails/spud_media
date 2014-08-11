@@ -22,12 +22,16 @@
 						<%end%>
 					<% end %>
 					<% if media.is_protected %>
-						<%= link_to raw('<i class="icon-lock"></i> Protected'), set_access_spud_admin_medium_path(media.id, :protected => false), :method => :put, :class => 'btn btn-sm btn-default' %>
+						<%= link_to set_access_spud_admin_medium_path(media.id, :protected => false), :method => :put, :class => 'btn btn-sm btn-default' do%>
+							<span class="glyphicon glyphicon-lock"></span>&nbsp; Protected
+						<%end%>
 					<% else %>
-						<%= link_to 'Public', set_access_spud_admin_medium_path(media.id, :protected => true), :method => :put, :class => 'btn btn-sm btn-default' %>
+						<%= link_to set_access_spud_admin_medium_path(media.id, :protected => true), :method => :put, :class => 'btn btn-sm btn-default' do%>
+							Public
+						<%end%>
 					<% end %>
 					<%= link_to "Replace", replace_spud_admin_medium_path(:id => media.id), :class => "btn btn-sm btn-default"%>
-					<%=link_to spud_admin_medium_path(:id => media.id),:method => :delete,:class => 'btn btn-danger',:confirm => "Are you sure you want to remove this file?" do%>
+					<%=link_to spud_admin_medium_path(:id => media.id),:method => :delete,:class => 'btn btn-sm btn-danger',:confirm => "Are you sure you want to remove this file?" do%>
 						<span class="glyphicon glyphicon-trash"></span>
 					<%end%>
 				</span>
