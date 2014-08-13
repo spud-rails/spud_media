@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "Readme.markdown"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", "~> 4.0.0"
+  s.add_dependency "rails", ">= 4.0.0"
   s.add_dependency 'spud_core', ">= 1.0.0"
 
-  s.add_dependency "paperclip", ">= 0"
+  s.add_dependency "paperclip", ">= 4.2.0"
 
   s.add_development_dependency 'mysql2'
   s.add_development_dependency 'rspec', '2.14.0'

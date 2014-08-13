@@ -16,6 +16,7 @@ class SpudMedia < ActiveRecord::Base
 
   # attr_accessible :attachment_content_type,:attachment_file_name,:attachment_file_size,:attachment, :is_protected, :crop_x, :crop_y, :crop_w, :crop_h, :crop_s
 
+  do_not_validate_attachment_file_type :attachment
   validates_numericality_of :crop_x, :crop_y, :crop_w, :crop_h, :crop_s, :allow_nil => true
   validates :attachment, :presence => true
   before_create :rename_file
